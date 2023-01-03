@@ -42,6 +42,7 @@ const Error = () => {
 const Thumbnail = styled.div`
     img{
         margin: 0 auto;
+        width: 60%;
     }
 `
 const ButtonWrapper = styled.div`

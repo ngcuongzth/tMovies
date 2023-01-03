@@ -30,7 +30,11 @@ npm install @mui/material @emotion/react @emotion/styled
 
 npm install react-loading-skeleton
 
+# Auth0 React SDK
+
+npm install @auth0/auth0-react
+
 # other modules
 
 npm i react-scroll-to-top
-npm install --save react-spinners
+npm install --save react-toastify

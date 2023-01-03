@@ -11,7 +11,7 @@ import { Link } from 'react-router-dom';
 import { breakpoints, border_radius } from '../styled/variables';
 import { useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import CardItemLoading from './SkeletonLoading/CardItemLoading';
+import CardItemLoading from './Loading/CardItemLoading';
 
 const List = ({ type, data, title }) => {
     const { isLoading } = useSelector((state) => {

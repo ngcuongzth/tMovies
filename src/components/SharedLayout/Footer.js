@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom'
-import bg from '../assets/img/footer-bg.jpg'
-import logo from '../assets/img/logo.png'
+import bg from '../../assets/img/footer-bg.jpg'
+import logo from '../../assets/img/logo.png'
 import styled from 'styled-components/macro'
-import { footerLinks } from '../utils/constant'
-import { colors, transitions, breakpoints } from '../styled/variables'
+import { footerLinks } from '../../utils/constants'
+import { colors, transitions, breakpoints } from '../../styled/variables'
 
 
 const Footer = () => {

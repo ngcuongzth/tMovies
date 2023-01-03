@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react'
 import styled from 'styled-components/macro'
-import { transitions, breakpoints, sizes, colors } from '../styled/variables'
-import logo from '../assets/img/logo.png'
-import { SidebarIcon as SidebarSvg } from '../utils/constant'
-import { navLinks } from '../utils/constant'
+import { transitions, breakpoints, sizes, colors } from '../../styled/variables'
+import logo from '../../assets/img/logo.png'
+import { SidebarIcon as SidebarSvg, CollectionIcon } from '../../utils/icons'
+import { navLinks } from '../../utils/constants'
 import { Link, NavLink } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
-import { toggle, closeSidebar } from '../redux/features/sidebarSlice'
+import { toggle, closeSidebar } from '../../redux/features/sidebarSlice'
+import { useAuth0 } from '@auth0/auth0-react'
+import { toast } from 'react-toastify'
+import { handleLogin, handleLogout } from '../../redux/features/userSlice'
 
 
 const Header = () => {
@@ -15,6 +18,27 @@ const Header = () => {
     let { isOpen } = useSelector((state) => {
         return state.sidebar
     })
+    const { collection, user: myUser } = useSelector((state) => {
+        return state.user
+    })
+
+    const [isOpenLogout, setIsOpenLogout] = useState(false);
+    const toggleIsOpenLogout = () => {
+        setIsOpenLogout(!isOpenLogout)
+    }
+    const { isAuthenticated, user, loginWithRedirect, logout } = useAuth0();
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            toast.success('Logged in successfully!')
+            dispatch(handleLogin(user))
+        }
+        else {
+            dispatch(handleLogout())
+        }
+        // eslint-disable-next-line
+    }, [isAuthenticated])
+
     useEffect(() => {
         const shrinkHeader = () => {
             if (document.scrollTop > 80 ||
@@ -31,6 +55,7 @@ const Header = () => {
         return () => {
             window.removeEventListener('scroll', shrinkHeader);
         }
+        // eslint-disable-next-line
     }, [isShrink])
 
 
@@ -72,12 +97,46 @@ const Header = () => {
                     </ul>
                 </Nav>
                 <BtnWrap>
-                    <button className="small outline-btn">
-                        Sign in
-                    </button>
-                    <button className="btn small">
-                        Sign up
-                    </button>
+                    {myUser ?
+                        <>
+                            <li>
+                                <NavLink to='/collection' className="collection">
+                                    <CollectionIcon />
+                                    <div className="total">
+                                        {collection.length}
+                                    </div>
+                                </NavLink>
+                            </li>
+
+                            <div className="profile" onClick={() => {
+                                toggleIsOpenLogout()
+                            }}>
+                                <span>Hi, {myUser.given_name}</span>
+                                <img src={myUser.picture} alt={myUser.given_name} />
+                            </div>
+                        </>
+                        :
+                        <button className="small outline-btn"
+                            onClick={() => {
+                                loginWithRedirect()
+                            }}
+                        >
+                            Login
+                        </button>
+                    }
+
+                    {isOpenLogout &&
+                        <div className="logout-btn"
+                            onClick={() => {
+                                logout({
+                                    returnTo: window.location.origin
+                                })
+                                toast.success('Logged out!')
+                            }}
+                        >
+                            Logout
+                        </div>
+                    }
                 </BtnWrap>
             </HeaderContainer>
         </Wrapper>
@@ -202,10 +261,60 @@ const BtnWrap = styled.div`
     display: flex;
     align-items: center;
     gap: 1rem;
+    position: relative;
     @media screen and (max-width: ${breakpoints.small}){
         button{
             display: none;
         }
     }
+    svg{
+        height: 30px;
+        width: 30px;
+    }
+    .profile{
+        cursor: pointer;
+        display: flex; 
+        gap: 5px;
+        align-items: center;
+        font-size: 1rem;
+        font-weight: 400;
+        img{
+            width: 3rem;
+            height: 3rem;
+            border-radius: 50%;
+        }
+        span{
+            font-weight: 600;
+        }
+    }
+    .logout-btn{
+        position: absolute;
+        top: 130%;
+        left: 0;
+        right: 0;
+        padding: 10px;
+        border-radius: 10px;
+        background-color: ${colors.white};
+        color: ${colors.main_color};
+        font-weight: 600;
+        text-align: center;
+        box-shadow: ${colors.main_color} 0px -1px 24px;
+        cursor: pointer;
+    }
+    .collection{
+        position: relative;
+
+        .total{
+            position: absolute;
+            top: -10px;
+            right: 0;
+            background-color: ${colors.main_color};
+            color: ${colors.white};
+            padding: 0 4px;
+            border-radius: 10px;
+            font-size: 1rem;
+        }
+    }
 `
+
 export default Header

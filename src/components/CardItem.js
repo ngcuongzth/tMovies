@@ -1,14 +1,19 @@
 import styled from 'styled-components/macro'
-import { PlayIcon, StarIcon } from '../utils/constant'
+import { PlayIcon } from '../utils/icons'
 import noBg from '../assets/img/no-bg.jpg'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import apiConfig from '../api/apiConfig'
 import { useNavigate } from 'react-router-dom'
 import { border_radius, colors, transitions } from '../styled/variables'
 import { updateId } from '../redux/features/detailSlice'
+import { addCollectionItem, removeCollectionItem } from '../redux/features/userSlice'
+import { toast } from 'react-toastify'
 
+const CardItem = ({ id, poster_path, backdrop_path, name, title, navigatePathDetail, page }) => {
 
-const CardItem = ({ id, poster_path, backdrop_path, name, title, navigatePathDetail }) => {
+  const { isLogin } = useSelector((state) => {
+    return state.user;
+  })
   const dispatch = useDispatch();
   const navigate = useNavigate();
   let bg;
@@ -31,9 +36,33 @@ const CardItem = ({ id, poster_path, backdrop_path, name, title, navigatePathDet
             <PlayIcon />
           </div>
         </button>
-        <button className="favourite-btn">
-          <StarIcon />
-        </button>
+        {page === "collection" ?
+          <button className="favourite-btn" onClick={() => {
+            if (isLogin) {
+              dispatch(removeCollectionItem({
+                id, navigatePathDetail
+              }))
+            }
+            else {
+              toast.warning('Please login to use this feature')
+            }
+          }}>
+            remove
+          </button>
+          :
+          <button className="favourite-btn" onClick={() => {
+            if (isLogin) {
+              dispatch(addCollectionItem({
+                id, poster_path, backdrop_path, name, title, navigatePathDetail
+              }))
+            }
+            else {
+              toast.warning('Please login to use this feature')
+            }
+          }}>
+            + collection
+          </button>
+        }
       </div>
       <h3 className="card-title">
         {title || name}
@@ -76,16 +105,17 @@ const Wrapper = styled.div`
     transition: ${transitions.main_transition};
     border-color: transparent;
     background-color: transparent;
-    & svg{
-      width: 1.6rem;
-      color: ${colors.text_color};
-    transition: ${transitions};
-     
-    }
-    &:hover svg{
-      fill: #FF6651;
-      color: #FF6651;
-    }
+    background-color: ${colors.white};
+    border-radius: 20px;
+    color: ${colors.main_color};
+    font-weight: 600;
+    padding: 0 5px;
+    border: 1px solid ${colors.main_color};
+    :hover{
+      background-color: ${colors.main_color};
+      color: ${colors.white};
+    border: 1px solid ${colors.white};
+    }    
   }
   .card-title{
     font-size: 1.2rem;

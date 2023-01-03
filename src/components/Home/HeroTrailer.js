@@ -1,6 +1,6 @@
 import styled from 'styled-components/macro'
 import { useSelector, useDispatch } from 'react-redux'
-import { CloseIcon } from '../../utils/constant'
+import { CloseIcon } from '../../utils/icons'
 import { colors, breakpoints, transitions } from '../../styled/variables'
 import { closeTrailerModal } from '../../redux/features/heroSlice'
 

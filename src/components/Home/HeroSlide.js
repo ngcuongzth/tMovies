@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import HeroSlideItem from "./HeroSlideItem";
 import HeroTrailer from './HeroTrailer'
 import styled from "styled-components/macro";
-import Loading from '../SkeletonLoading/HomeHeroLoading'
+import Loading from '../Loading/HomeHeroLoading'
 
 const HeroSlide = () => {
     const dispatch = useDispatch();

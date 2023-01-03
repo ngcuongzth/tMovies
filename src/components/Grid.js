@@ -1,8 +1,7 @@
 import styled from "styled-components/macro"
-// import Loading from "./Loading/MainLoading"
 import CardItem from "./CardItem"
 import { breakpoints } from "../styled/variables"
-import CardItemLoading from '../components/SkeletonLoading/CardItemLoading'
+import CardItemLoading from '../components/Loading/CardItemLoading'
 
 const Grid = ({ navigatePathDetail, data, isLoading }) => {
     if (isLoading) {
@@ -28,7 +27,7 @@ const Grid = ({ navigatePathDetail, data, isLoading }) => {
     )
 }
 
-const Wrapper = styled.section`
+export const Wrapper = styled.section`
     margin-bottom: 5rem;
     display: grid;
     grid-template-columns: repeat(6,1fr);

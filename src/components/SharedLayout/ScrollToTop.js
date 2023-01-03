@@ -1,4 +1,4 @@
-import { ScrollToTopIcon } from '../utils/constant'
+import { ScrollToTopIcon } from '../../utils/icons'
 import MyScroll from 'react-scroll-to-top'
 
 
