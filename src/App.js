@@ -3,6 +3,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom"
 import SharedLayout from "./components/SharedLayout/SharedLayout"
 import { Home, Error, Movies, TvSeries, MovieSearch, TvSeriesSearch, MovieDetails, TvSeriesDetails, Collection } from './pages'
 import { Auth0Provider } from "@auth0/auth0-react"
+import AuthWrapper from "./pages/AuthWrapper"
 
 const App = () => {
   return (
@@ -13,21 +14,23 @@ const App = () => {
       cacheLocation='localstorage'
     >
       <GlobalStyles />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/" element={<SharedLayout />}>
-            <Route index element={<Home />} />
-            <Route path="/movie" element={<Movies />} />
-            <Route path="/tv" element={<TvSeries />} />
-            <Route path="*" element={<Error />} />
-            <Route path="/movie/search/:query" element={<MovieSearch />} />
-            <Route path="/tv/search/:query" element={<TvSeriesSearch />} />
-            <Route path="/movie/detail/:id" element={<MovieDetails />} />
-            <Route path="/tv/detail/:id" element={<TvSeriesDetails />} />
-            <Route path="/collection" element={<Collection />} />
-          </Route>
-        </Routes>
-      </BrowserRouter>
+      <AuthWrapper>
+        <BrowserRouter>
+          <Routes>
+            <Route path="/" element={<SharedLayout />}>
+              <Route index element={<Home />} />
+              <Route path="/movie" element={<Movies />} />
+              <Route path="/tv" element={<TvSeries />} />
+              <Route path="*" element={<Error />} />
+              <Route path="/movie/search/:query" element={<MovieSearch />} />
+              <Route path="/tv/search/:query" element={<TvSeriesSearch />} />
+              <Route path="/movie/detail/:id" element={<MovieDetails />} />
+              <Route path="/tv/detail/:id" element={<TvSeriesDetails />} />
+              <Route path="/collection" element={<Collection />} />
+            </Route>
+          </Routes>
+        </BrowserRouter>
+      </AuthWrapper>
     </Auth0Provider>
 
   )

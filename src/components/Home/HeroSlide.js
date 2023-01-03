@@ -33,7 +33,7 @@ const HeroSlide = () => {
                 grabCursor={true}
                 slidesPerView={1}
                 autoplay={{
-                    delay: 4000000,
+                    delay: 4000,
                     disableOnInteraction: false,
                 }}
                 loop={true}
